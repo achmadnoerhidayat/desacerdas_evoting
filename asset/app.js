@@ -15,7 +15,7 @@ function getToken() {
 }
 
 // var url = "http://localhost/api/"; // dev
-var url = "http://evoting.desacerdas.com//api/"; //prod
+var url = "https://evoting.desacerdas.com/api/"; //prod
 function http() {
   return axios.create({
     baseURL: url,
