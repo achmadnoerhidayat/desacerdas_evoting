@@ -1,5 +1,8 @@
 <?php
-$koneksi = mysqli_connect("database", "root", "root", "evoting") or die('MySQL connect failed. ' . mysqli_connect_error());
+// production
+$koneksi = mysqli_connect("localhost", "u4884394_desacerdas_evot", "desacerdasevoting", "u4884394_desacerdas_evoting") or die('MySQL connect failed. ' . mysqli_connect_error());
+
+// $koneksi = mysqli_connect("database", "root", "root", "evoting") or die('MySQL connect failed. ' . mysqli_connect_error());
 
 function getWilProfinsi()
 {
