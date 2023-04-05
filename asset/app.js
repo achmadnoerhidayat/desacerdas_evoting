@@ -15,6 +15,18 @@ function getToken() {
   return obj.token;
 }
 
+function isAdmin() {
+  var token = JSON.parse(getAccesToken());
+  console.log(token);
+  if (!token) {
+    return location.href = '/';
+  }
+
+  if (token.user.role != 'Admin') {
+    return location.href = '/';
+  }
+}
+
 // var url = "http://localhost/api/"; // dev
 var url = "https://evoting.desacerdas.com/api/"; //prod
 function http() {
@@ -25,6 +37,7 @@ function http() {
     },
   });
 }
+
 function httpFile() {
   return axios.create({
     baseURL: url,

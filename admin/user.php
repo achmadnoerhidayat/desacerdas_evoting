@@ -458,6 +458,9 @@
                 this.loadUser();
                 this.getProvinsi();
             },
+            beforeCreate() {
+                isAdmin();
+            },
             methods: {
                 loadUser: async function() {
                     try {

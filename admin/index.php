@@ -44,13 +44,15 @@
     <script>
         var app = new Vue({
             el: "#app",
-            data: {
-            },
+            data: {},
             mounted() {
                 $(".sidebar-item").removeClass("active");
                 $("#home").addClass("active");
             },
-            
+            beforeCreate() {
+                isAdmin();
+            },
+
         });
     </script>
 
