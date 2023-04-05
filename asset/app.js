@@ -11,7 +11,8 @@ function getToken() {
   if (!token) {
     return null;
   }
-  return token.token;
+  let obj = JSON.parse(token);
+  return obj.token;
 }
 
 // var url = "http://localhost/api/"; // dev

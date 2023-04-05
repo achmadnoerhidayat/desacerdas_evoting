@@ -170,6 +170,7 @@ $params['id_provinsi'] = $_POST['id_provinsi'];
 $params['id_kota'] = $_POST['id_kota'];
 $params['id_kecamatan'] = $_POST['id_kecamatan'];
 $params['id_kelurahan'] = $_POST['id_kelurahan'];
+$params['role'] = $_POST['role'];
 $params['rt'] = $_POST['rt'];
 $params['rw'] = $_POST['rw'];
 $params['temp_ktp'] = $temp_ktp;

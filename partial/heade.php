@@ -17,10 +17,10 @@
                     <a class="nav-link" href="/perolehan">Perolehan</a>
                 </li>
                 <li class="nav-item" v-if="!login">
-                    <a class="nav-link" id="login" href="/login.php">Login</a>
+                    <a class="nav-link" id="login" href="/auth/login.php">Login</a>
                 </li>
                 <li class="nav-item" v-if="!login">
-                    <a class="nav-link" id="register" href="/register.php">Register</a>
+                    <a class="nav-link" id="register" href="/auth/register.php">Register</a>
                 </li>
             </ul>
         </div>

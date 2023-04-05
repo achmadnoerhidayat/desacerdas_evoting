@@ -74,7 +74,8 @@ if (isset($input->nik) || isset($input->password)) {
         $response = [
             'user' => [
                 'nik' => $login['nik'],
-                'nama' => $login['nama']
+                'nama' => $login['nama'],
+                'role' => $login['role'],
             ],
             'token_type' => "Bearer",
             'token' => $access_token,
