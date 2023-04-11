@@ -81,13 +81,13 @@ if (!$_POST['misi']) {
     ]);
 }
 
-if ($size_ktp > 5000000) {
+if ($size_pres > 5000000) {
     array_push($eror, [
         'gambar' => 'gambar KTP tidak boleh lebig dari 5mb'
     ]);
 }
 
-if ($size_kk > 5000000) {
+if ($size_wakil > 5000000) {
     array_push($eror, [
         'gambar' => 'gambar KK tidak boleh lebig dari 5mb'
     ]);
