@@ -595,6 +595,8 @@
                     formData.append("id_kota", this.record.id_kota);
                     formData.append("id_kecamatan", this.record.id_kecamatan);
                     formData.append("id_kelurahan", this.record.id_kelurahan);
+                    formData.append("role", this.record.role);
+
                     formData.append("rt", this.record.rt);
                     formData.append("rw", this.record.rw);
                     formData.append("foto_ktp", this.record.foto_ktp);

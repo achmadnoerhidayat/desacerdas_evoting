@@ -73,6 +73,7 @@ if (isset($input->nik) || isset($input->password)) {
         $access_token = JWT::encode($login, $secret, 'HS256');
         $response = [
             'user' => [
+                'id' => $login['id'],
                 'nik' => $login['nik'],
                 'nama' => $login['nama'],
                 'role' => $login['role'],
