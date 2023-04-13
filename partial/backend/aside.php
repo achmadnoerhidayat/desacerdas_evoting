@@ -11,7 +11,7 @@
         <ul class="menu">
             <li class="sidebar-title">Menu</li>
 
-            <li class="sidebar-item active" id="home">
+            <li class="sidebar-item" id="home">
                 <a href="/admin/index.php" class='sidebar-link'>
                     <i class="bi bi-grid-fill"></i>
                     <span>Dashboard</span>
@@ -29,14 +29,12 @@
                     <span>Manajemen Kandidat</span>
                 </a>
             </li>
-            <li class="sidebar-item">
-                <a href="index.html" class='sidebar-link'>
+            <li class="sidebar-item" id="perolehan">
+                <a href="/admin/prolehan.php" class='sidebar-link'>
                     <i class="bi bi-clipboard-data-fill"></i>
                     <span>Perolehan</span>
                 </a>
             </li>
-
-
         </ul>
     </div>
 </div>

@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="asset/style.css">
-    <?php require_once("partial/style.php"); ?>
+    <link rel="stylesheet" href="../asset/style.css">
+    <?php require_once("../partial/style.php"); ?>
     <style>
         .invalid-feedback {
             display: block !important;
@@ -32,12 +32,12 @@
 
 <body>
     <div id="app">
-        <?php require_once("partial/heade.php"); ?>
+        <?php require_once("../partial/heade.php"); ?>
         <section class="container mt-3">
             <div class="row" v-if="load">
                 <div class="col-4 mt-2">
                     <div class="card" aria-hidden="true">
-                        <img src="asset/white-bg.jpg" class="card-img-top img_card" alt="...">
+                        <img src="../asset/white-bg.jpg" class="card-img-top img_card" alt="...">
                         <div class="card-body">
                             <h5 class="card-title placeholder-glow">
                                 <span class="placeholder col-6"></span>
@@ -55,7 +55,7 @@
                 </div>
                 <div class="col-4 mt-2">
                     <div class="card" aria-hidden="true">
-                        <img src="asset/white-bg.jpg" class="card-img-top img_card" alt="...">
+                        <img src="../asset/white-bg.jpg" class="card-img-top img_card" alt="...">
                         <div class="card-body">
                             <h5 class="card-title placeholder-glow">
                                 <span class="placeholder col-6"></span>
@@ -74,7 +74,10 @@
 
             </div>
             <div class="row" v-if="!load && kandidat.length > 0">
-                <div class="col-3 position-relative" v-for="(data,key) in kandidat" :key="key">
+                <p class="h5 text-center mb-3">
+                    Daftar Calon Presiden Periode 2024 / 2029
+                </p>
+                <div class="col-md-3 mb-4 position-relative" v-for="(data,key) in kandidat" :key="key">
                     <span class="d-flex justify-content-end size">
                         <i :class="`bi bi-${key+1}-circle-fill`"></i>
                     </span>
@@ -246,9 +249,9 @@
                 </div>
             </div>
         </div>
-        <?php require_once("partial/footer.php"); ?>
+        <?php require_once("../partial/footer.php"); ?>
     </div>
-    <?php require_once("partial/script.php"); ?>
+    <?php require_once("../partial/script.php"); ?>
     <script>
         var app = new Vue({
             el: "#app",
@@ -261,7 +264,7 @@
 
             },
             mounted() {
-                $("#home").addClass("active");
+                $("#voting").addClass("active");
                 this.loadKandidat();
             },
 

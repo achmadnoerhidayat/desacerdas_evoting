@@ -10,11 +10,11 @@
                 <li class="nav-item">
                     <a class="nav-link" id="home" aria-current="page" href="/">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="evoting">E-Voting</a>
+                <li class="nav-item" id="voting">
+                    <a class="nav-link" href="/home/voting.php">E-Voting</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/perolehan">Perolehan</a>
+                    <a class="nav-link" href="/home/perolehan.php" id="perolehan">Perolehan</a>
                 </li>
                 <li class="nav-item" v-if="!login">
                     <a class="nav-link" id="login" href="/auth/login.php">Login</a>

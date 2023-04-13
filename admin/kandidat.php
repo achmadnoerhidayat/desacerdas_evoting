@@ -7,6 +7,17 @@
     <title>Dashboard - Evoting</title>
 
     <?php require_once("../partial/backend/style.php"); ?>
+    <style>
+        .size {
+            position: absolute;
+            width: 100%;
+            top: 1px;
+            right: 9%;
+            font-size: 20px;
+            z-index: 100;
+            color: #FFFFFF;
+        }
+    </style>
 
 </head>
 
@@ -119,27 +130,23 @@
                                     </div>
                                 </div>
                                 <div class="row" v-if="!load && kandidat.length > 0">
-                                    <div class="col-6" v-for="(data,key) in kandidat" :key="key">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="card">
-                                                    <span>
-                                                        {{ key+1 }}
-                                                    </span>
-                                                    <img :src="`${data.presiden.image}`" class="card-img-top img_card" alt="...">
-                                                    <div class="card-body p-3">
-                                                        <h5 class="card-title">
-                                                            {{ data.presiden.nama }}
-                                                        </h5>
-                                                        <p class="card-text">
-                                                            {{ data.visi }}
-                                                        </p>
-                                                        <div class="d-flex justify-content-around">
-                                                            <a href="#" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
-                                                            <a href="javascript:void(0)" class="btn btn-success" v-on:click="showKandidat(data)"><i class="bi bi-eye-fill"></i></a>
-                                                            <a href="javascript:void(0)" class="btn btn-danger" v-on:click="deleteKandidat(data)"><i class="bi bi-trash3-fill"></i></a>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-3 position-relative" v-for="(data,key) in kandidat" :key="key">
+                                        <span class="d-flex justify-content-end size">
+                                            <i :class="`bi bi-${key+1}-circle`"></i>
+                                        </span>
+                                        <div class="card">
+                                            <img :src="`${data.presiden.image}`" class="card-img-top img_card" alt="...">
+                                            <div class="card-body p-3">
+                                                <h5 class="card-title">
+                                                    {{ data.presiden.nama }}
+                                                </h5>
+                                                <p class="card-text">
+                                                    {{ data.visi }}
+                                                </p>
+                                                <div class="d-flex justify-content-around">
+                                                    <a href="javascript:void(0)" class="btn btn-warning" v-on:click="updateKandidat(data)"><i class="bi bi-pencil"></i></a>
+                                                    <a href="javascript:void(0)" class="btn btn-success" v-on:click="showKandidat(data)"><i class="bi bi-eye-fill"></i></a>
+                                                    <a href="javascript:void(0)" class="btn btn-danger" v-on:click="deleteKandidat(data)"><i class="bi bi-trash3-fill"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -151,6 +158,7 @@
                 </section>
             </div>
         </div>
+        <!-- modal create -->
         <div class="modal fade" id="addKandidat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -232,7 +240,7 @@
         </div>
 
         <!-- show modal kandidat -->
-        <div class="modal fade" id="updateKandidat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade" id="detailKandidat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content" v-if="Object.keys(presiden).length > 0">
                     <div class="modal-header">
@@ -381,7 +389,87 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <!-- modal update -->
+        <div class="modal fade" id="updateKandidat" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            Update Kandidat
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingNIk" placeholder="Masukan Nama Presiden" v-model="record.nama_pres">
+                                <label for="floatingNIk">Nama Presiden</label>
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].nama_pres }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingNoUrt" placeholder="Masukan No Urut Presiden" v-model="record.no_pres">
+                                <label for="floatingNoUrt">No Urut Presiden</label>
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].no_pres }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="wakilPresiden" placeholder="Masukan Wakil Presiden" v-model="record.nama_w_pres">
+                                <label for="wakilPresiden">Nama Wakil Presiden</label>
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].nama_w_pres }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="floatingNoUrt" placeholder="Masukan No Urut Wakil Presiden" v-model="record.no_wakil">
+                                <label for="floatingNoUrt">No Urut Wakil Presiden</label>
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].no_wakil }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" placeholder="Masukan Wakil Presiden" id="visi" v-model="record.visi">
+                                <label for="visi">Visi</label>
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].visi }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" placeholder="Masukan Wakil Presiden" id="misi" v-model="record.misi">
+                                <label for="misi">Misi</label>
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].misi }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="uploadPresiden">Uploade Presiden</label>
+                                <input type="file" ref="presImg" v-on:change="changeImgPres" class="form-control" id="uploadPresiden">
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].gambar_presiden }}
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="uploadWakil">Uploade Wakil Presiden</label>
+                                <input type="file" ref="presWImg" v-on:change="changeImgWakilPres" class="form-control" id="uploadWakil">
+                                <div class="invalid-feedback" v-if="error.length > 0">
+                                    {{ error[0].gambar_wakil }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-primary" v-on:click="updateData" v-if="!loadBtn">Simpan</button>
+                        <button class="btn btn-primary" type="button" disabled v-else>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <?php require_once("../partial/backend/script.php"); ?>
@@ -474,7 +562,7 @@
                 },
                 showKandidat(params) {
                     this.presiden = params;
-                    $("#updateKandidat").modal("show");
+                    $("#detailKandidat").modal("show");
                 },
                 deleteKandidat: async function(params) {
                     const swalWithBootstrapButtons = Swal.mixin({
@@ -526,6 +614,50 @@
                             title: 'Oops... ',
                             text: 'terjadi kesalahan silahkan refresh halaman... ',
                         });
+                    }
+                },
+                updateKandidat(params) {
+                    $("#updateKandidat").modal('show');
+                    this.record = {
+                        id: params.id,
+                        nama_pres: params.presiden.nama,
+                        no_pres: params.presiden.no,
+                        nama_w_pres: params.wakil_presiden.nama,
+                        no_wakil: params.wakil_presiden.no,
+                        visi: params.visi,
+                        misi: params.misi,
+                    };
+                },
+                updateData: async function() {
+                    this.loadBtn = true;
+                    let formData = new FormData();
+                    formData.append("id", this.record.id);
+                    formData.append("nama_pres", this.record.nama_pres);
+                    formData.append("no_pres", this.record.no_pres);
+                    formData.append("nama_w_pres", this.record.nama_w_pres);
+                    formData.append("no_wakil", this.record.no_wakil);
+                    formData.append("visi", this.record.visi);
+                    formData.append("misi", this.record.misi);
+                    formData.append("image_pres", this.record.image_pres);
+                    formData.append("image_w_pres", this.record.image_w_pres);
+                    try {
+                        const response = await httpFile().post('kandidat/update.php', formData);
+                        if (response.data.code == 200) {
+                            this.loadBtn = false;
+                            this.loadKandidat();
+                            this.clearRecord();
+                            $("#updateKandidat").modal('hide');
+                        }
+                    } catch (error) {
+                        this.loadBtn = false;
+                        switch (error.response.status) {
+                            case 422:
+                                this.error = error.response.data.error
+                                break;
+
+                            default:
+                                break;
+                        }
                     }
                 }
             },

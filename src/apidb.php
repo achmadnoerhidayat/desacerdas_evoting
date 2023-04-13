@@ -550,7 +550,7 @@ function getAllKandidat()
     $record = [];
     while ($data = mysqli_fetch_assoc($query)) {
         $id_kandidat = $data['id'];
-        $q_suara = mysqli_query($koneksi,"SELECT SUM(jumlah) AS jumlah FROM suara WHERE kandidat_id='$id_kandidat'");
+        $q_suara = mysqli_query($koneksi, "SELECT coalesce(SUM(jumlah),0) AS jumlah FROM suara WHERE kandidat_id='$id_kandidat'");
         list($jumlah) = mysqli_fetch_array($q_suara);
         array_push($record, [
             "id" => $data['id'],
@@ -630,13 +630,80 @@ function createKandidat($data)
     return false;
 }
 
+function updateKandidat($data)
+{
+    global $koneksi;
+    $query = mysqli_query($koneksi, "SELECT kandidat.id,
+    kandidat.visi,
+    kandidat.misi,
+    presiden.id AS id_pres,
+    presiden.nama AS nama_pres,
+    presiden.image AS img_pres,
+    presiden.no_urut AS no_pres,
+    wakil_presiden.id AS wakil_id,
+    wakil_presiden.nama AS nama_w_pres,
+    wakil_presiden.image AS img_w_pres,
+    wakil_presiden.no_urut AS no_wakil
+    FROM kandidat
+    LEFT JOIN presiden ON presiden.id = kandidat.presiden_id
+    LEFT JOIN wakil_presiden ON wakil_presiden.id = kandidat.wakil_id WHERE kandidat.id='$data->id'");
+
+    $tm_cari = mysqli_fetch_array($query);
+    if (!isset($tm_cari['id'])) {
+        return false;
+    }
+
+    if (isset($tm_cari['img_pres'])) {
+        $file_pres = $tm_cari['img_pres'];
+        $folder_pres = $_SERVER['DOCUMENT_ROOT'] . "/file_upload/" . $file_pres;
+        if (file_exists($folder_pres)) {
+            unlink($folder_pres);
+        }
+    }
+
+    if (isset($tm_cari['img_w_pres'])) {
+        $file_wakil = $tm_cari['img_w_pres'];
+        $folder_wakil = $_SERVER['DOCUMENT_ROOT'] . "/file_upload/" . $file_wakil;
+        if (file_exists($folder_wakil)) {
+            unlink($folder_wakil);
+        }
+    }
+    $folder = $_SERVER['DOCUMENT_ROOT'] . "/file_upload/";
+    if (!empty($data->temp_pres) || !empty($data->temp_wakil)) {
+        $foto_pres = "../file_upload/" . $data->name_pres;
+        $foto_wakil = "../file_upload/" . $data->name_wakil;
+        $name_pres = basename($data->name_pres);
+        move_uploaded_file($data->temp_pres, $folder . $name_pres);
+        $name_wakil = basename($data->name_wakil);
+        move_uploaded_file($data->temp_wakil, $folder . $name_wakil);
+
+        $id_pres = $tm_cari['id_pres'];
+        $wakil_id = $tm_cari['wakil_id'];
+
+        mysqli_query($koneksi, "UPDATE presiden SET nama='$data->nama_pres',
+        image='$foto_pres',
+        no_urut='$data->no_pres' WHERE id='$id_pres'
+        ") or die(mysqli_error($koneksi));
+
+        mysqli_query($koneksi, "UPDATE wakil_presiden SET image='$foto_wakil',
+        nama='$data->nama_w_pres',
+        no_urut='$data->no_wakil' WHERE id='$wakil_id'") or die(mysqli_error($koneksi));
+
+        mysqli_query($koneksi, "UPDATE kandidat SET visi='$data->visi',
+        misi='$data->misi' WHERE id='$data->id'") or die(mysqli_error($koneksi));
+
+        return true;
+    }
+    return false;
+}
+
 function createSuara($data)
 {
     global $koneksi;
     $query = mysqli_query($koneksi, "SELECT kandidat_id,jumlah,user_id FROM suara WHERE kandidat_id='$data->kandidat_id'") or die(mysqli_error($koneksi));
     $suara = mysqli_fetch_array($query);
 
-    $q_jumlah = mysqli_query($koneksi,"SELECT id,kandidat_id,user_id FROM suara WHERE user_id='$data->user_id'") or die(mysqli_error($koneksi));
+    $q_jumlah = mysqli_query($koneksi, "SELECT id,kandidat_id,user_id FROM suara WHERE user_id='$data->user_id'") or die(mysqli_error($koneksi));
 
     list($user_id) = mysqli_fetch_array($q_jumlah);
     if ($user_id) {
@@ -698,6 +765,11 @@ function deleteKandidat($data)
         unlink($folder_wakil);
     }
 
+    $id_pres = $tm_cari['id_pres'];
+    $wakil_id = $tm_cari['wakil_id'];
+
+    mysqli_query($koneksi, "DELETE FROM presiden WHERE id='$id_pres'") or die(mysqli_error($koneksi));
+    mysqli_query($koneksi, "DELETE FROM wakil_presiden WHERE id='$wakil_id'") or die(mysqli_error($koneksi));
     mysqli_query($koneksi, "DELETE FROM kandidat WHERE id='$data->id'") or die(mysqli_error($koneksi));
     return true;
 }
